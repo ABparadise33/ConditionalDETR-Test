@@ -229,7 +229,7 @@ def main(args):
         
         if coco_evaluator is not None and args.output_dir and utils.is_main_process():
             # stats[0] 對應的就是 COCO AP (IoU=0.50:0.95)
-            current_map = coco_evaluator.coco_eval["bbox"].stats[0]
+            current_map = coco_evaluator.coco_eval["bbox"].stats[2]
             if current_map > best_map:
                 best_map = current_map
                 utils.save_on_master({
@@ -239,7 +239,7 @@ def main(args):
                     'epoch': epoch,
                     'args': args,
                 }, output_dir / 'checkpoint_best.pth')
-                print(f"\n>>> 發現更高的 mAP: {best_map:.4f}！已儲存為 checkpoint_best.pth <<<\n")
+                print(f"\n>>> 發現更高的 mAP75: {best_map:.4f}！已儲存為 checkpoint_best.pth <<<\n")
         
         log_stats = {**{f'train_{k}': v for k, v in train_stats.items()},
                      **{f'test_{k}': v for k, v in test_stats.items()},
